@@ -1,8 +1,35 @@
+module voting_system::dashboard;
 
-module voting_system::voting_system;
+use std::string::String;
 
+// key is ability
+public struct Proposal has key {
+    id: UID,
+    title: String,
+    description: String,
+    voted_yes_count: u64,
+    voted_no_count: u64,
+    expiration: u64,
+    creator: address,
+    registry: vector<address>,
+}
 
-// For Move coding conventions, see
-// https://docs.sui.io/concepts/sui-move-concepts/conventions
+public fun create_proposal(
+    title: String,
+    description: String,
+    expiration: u64,
+    ctx: &mut TxContext,
+) {
+    let proposal = Proposal {
+        id: object::new(ctx),
+        title,
+        description,
+        voted_yes_count: 0,
+        voted_no_count: 0,
+        expiration,
+        creator: ctx.sender(),
+        registry: vector[],
+    };
 
-
+    transfer::share_object(proposal)
+}
