@@ -1,4 +1,5 @@
 import { useCurrentAccount } from "@mysten/dapp-kit";
+import { OwnedObject } from "../OwnedObjects";
 
 export const WalletStatus = () => {
   const account = useCurrentAccount();
@@ -16,6 +17,7 @@ export const WalletStatus = () => {
       ) : (
         <p className="text-gray-700 dark:text-gray-300">Wallet not connected</p>
       )}
+      <OwnedObject />
     </div>
   );
 };
