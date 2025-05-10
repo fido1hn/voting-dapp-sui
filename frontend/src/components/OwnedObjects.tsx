@@ -1,4 +1,5 @@
 import { useCurrentAccount, useSuiClientQuery } from "@mysten/dapp-kit";
+import { SuiObject } from "./SuiObject";
 
 export const OwnedObject = () => {
   const account = useCurrentAccount();
@@ -10,6 +11,11 @@ export const OwnedObject = () => {
     "getOwnedObjects",
     {
       owner: account?.address as string,
+      options: {
+        showType: true,
+        showOwner: true,
+        showContent: true,
+      },
     },
     {
       enabled: !!account,
@@ -33,17 +39,9 @@ export const OwnedObject = () => {
         </h2>
       )}
       <div className="space-y-2">
-        {response.data.map((objRes) => {
-          return (
-            <div
-              key={objRes.data?.objectId}
-              className="p-2 border rounded-lg bg-gray-50 dark:bg-gray-800">
-              <p className="text-gray-700 dark:text-gray-300">
-                Ojbect ID: {objRes.data?.objectId}
-              </p>
-            </div>
-          );
-        })}
+        {response.data.map((objRes) => (
+          <SuiObject key={objRes.data?.objectId} objRes={objRes} />
+        ))}
       </div>
     </div>
   );
