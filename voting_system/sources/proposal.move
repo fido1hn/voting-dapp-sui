@@ -1,8 +1,7 @@
-module voting_system::dashboard;
+module voting_system::proposal;
 
 use std::string::String;
 
-// key is ability
 public struct Proposal has key {
     id: UID,
     title: String,
@@ -14,12 +13,7 @@ public struct Proposal has key {
     registry: vector<address>,
 }
 
-public fun create_proposal(
-    title: String,
-    description: String,
-    expiration: u64,
-    ctx: &mut TxContext,
-) {
+public fun create(title: String, description: String, expiration: u64, ctx: &mut TxContext) {
     let proposal = Proposal {
         id: object::new(ctx),
         title,
