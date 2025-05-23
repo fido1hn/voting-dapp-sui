@@ -27,9 +27,15 @@ fun test_module_init() {
     let creator = @0xCA;
 
     let mut scenario = test_scenario::begin(creator);
-
     {
-        init(scenario.ctx())
+        init(scenario.ctx());
+    };
+
+    scenario.next_tx(creator);
+    {
+        let dashboard = scenario.take_shared<Dashboard>();
+        assert!(dashboard.proposals_ids.is_empty());
+        test_scenario::return_shared(dashboard);
     };
 
     scenario.next_tx(creator);
