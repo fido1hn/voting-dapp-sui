@@ -22,7 +22,7 @@ public fun register_proposal(self: &mut Dashboard, proposal_id: ID) {
 #[test]
 fun test_module_init() {
     use sui::test_scenario;
-    use voting_system::proposal::{Self};
+    use voting_system::proposal::{Self, Proposal};
 
     let creator = @0xCA;
 
@@ -43,6 +43,19 @@ fun test_module_init() {
         let title = b"Hi".to_string();
         let desc = b"Greeting".to_string();
         proposal::create(title, desc, 3000000000, scenario.ctx());
+    };
+
+    scenario.next_tx(creator);
+    {
+        let created_proposal = scenario.take_shared<Proposal>();
+        assert!(created_proposal.title() == b"Hi".to_string());
+        assert!(created_proposal.description() == b"Greeting".to_string());
+        assert!(created_proposal.expiration() == 3000000000);
+        assert!(created_proposal.voted_no_count() == 0);
+        assert!(created_proposal.voted_yes_count() == 0);
+        assert!(created_proposal.creator() == creator);
+        assert!(created_proposal.voter_registry().is_empty());
+        test_scenario::return_shared(created_proposal);
     };
 
     scenario.end();

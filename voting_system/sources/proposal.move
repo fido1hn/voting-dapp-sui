@@ -10,7 +10,7 @@ public struct Proposal has key {
     voted_no_count: u64,
     expiration: u64,
     creator: address,
-    registry: vector<address>,
+    voter_registry: vector<address>,
 }
 
 public fun create(title: String, description: String, expiration: u64, ctx: &mut TxContext) {
@@ -22,8 +22,36 @@ public fun create(title: String, description: String, expiration: u64, ctx: &mut
         voted_no_count: 0,
         expiration,
         creator: ctx.sender(),
-        registry: vector[],
+        voter_registry: vector[],
     };
 
     transfer::share_object(proposal)
+}
+
+public fun title(self: &Proposal): String {
+    self.title
+}
+
+public fun description(self: &Proposal): String {
+    self.description
+}
+
+public fun voted_yes_count(self: &Proposal): u64 {
+    self.voted_yes_count
+}
+
+public fun voted_no_count(self: &Proposal): u64 {
+    self.voted_no_count
+}
+
+public fun expiration(self: &Proposal): u64 {
+    self.expiration
+}
+
+public fun creator(self: &Proposal): address {
+    self.creator
+}
+
+public fun voter_registry(self: &Proposal): vector<address> {
+    self.voter_registry
 }
