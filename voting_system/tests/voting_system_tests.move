@@ -6,11 +6,11 @@ use voting_system::dashboard::{Self, AdminCapability};
 use voting_system::proposal::{Self, Proposal};
 
 #[test]
-fun test_create_proposal() {
+fun test_create_proposal_with_admin_cap() {
     let user = @0xCA;
     let mut scenario = test_scenario::begin(user);
     {
-        dashboard::issue_public_cap(scenario.ctx());
+        dashboard::issue_admin_cap(scenario.ctx());
     };
 
     scenario.next_tx(user);
@@ -33,6 +33,27 @@ fun test_create_proposal() {
         assert!(created_proposal.creator() == user);
         assert!(created_proposal.voter_registry().is_empty());
         test_scenario::return_shared(created_proposal);
+    };
+    scenario.end();
+}
+
+#[test]
+#[expected_failure(abort_code = test_scenario::EEmptyInventory)]
+fun test_create_proposal_without_admin_cap() {
+    let user = @0xB0B;
+    let admin = @0xA01;
+    let mut scenario = test_scenario::begin(admin);
+    {
+        dashboard::issue_admin_cap(scenario.ctx());
+    };
+
+    scenario.next_tx(user);
+    {
+        let title = b"Hi".to_string();
+        let desc = b"Greeting".to_string();
+        let admin_cap = scenario.take_from_sender<AdminCapability>();
+        proposal::create(&admin_cap, title, desc, 3000000000, scenario.ctx());
+        test_scenario::return_to_sender(&scenario, admin_cap);
     };
     scenario.end();
 }

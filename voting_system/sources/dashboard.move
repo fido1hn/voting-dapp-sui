@@ -24,7 +24,7 @@ public fun register_proposal(self: &mut Dashboard, proposal_id: ID) {
 }
 
 #[test_only]
-public fun issue_public_cap(ctx: &mut TxContext) {
+public fun issue_admin_cap(ctx: &mut TxContext) {
     transfer::transfer(AdminCapability { id: object::new(ctx) }, ctx.sender())
 }
 
