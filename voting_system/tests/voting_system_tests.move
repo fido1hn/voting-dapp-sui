@@ -1,18 +1,20 @@
 #[test_only]
 module voting_system::voting_system_tests;
 
+use sui::test_scenario;
+use voting_system::dashboard::AdminCapability;
+use voting_system::proposal::{Self, Proposal};
+
 #[test]
 fun test_create_proposal() {
-    use sui::test_scenario;
-    use voting_system::proposal::{Self, Proposal};
-
     let user = @0xCA;
-
     let mut scenario = test_scenario::begin(user);
     {
         let title = b"Hi".to_string();
         let desc = b"Greeting".to_string();
-        proposal::create(title, desc, 3000000000, scenario.ctx());
+        let admin_cap = scenario.take_from_sender<AdminCapability>();
+        proposal::create(&admin_cap, title, desc, 3000000000, scenario.ctx());
+        test_scenario::return_to_sender(&scenario, admin_cap);
     };
 
     scenario.next_tx(user);
@@ -27,6 +29,5 @@ fun test_create_proposal() {
         assert!(created_proposal.voter_registry().is_empty());
         test_scenario::return_shared(created_proposal);
     };
-
     scenario.end();
 }
