@@ -9,13 +9,14 @@ public struct AdminCapability has key {
     id: UID,
 }
 
-fun init(ctx: &mut TxContext) {
-    let admin_cap = AdminCapability { id: object::new(ctx) };
-    new(&admin_cap, ctx);
-    transfer::transfer(admin_cap, ctx.sender());
+public struct DASHBOARD has drop {}
+
+fun init(otw: DASHBOARD, ctx: &mut TxContext) {
+    new(otw, ctx);
+    transfer::transfer(AdminCapability { id: object::new(ctx) }, ctx.sender());
 }
 
-public fun new(_admin_cap: &AdminCapability, ctx: &mut TxContext) {
+public fun new(_otw: DASHBOARD, ctx: &mut TxContext) {
     let dashboard = Dashboard { id: object::new(ctx), proposals_ids: vector[] };
     transfer::share_object(dashboard);
 }
@@ -36,7 +37,8 @@ fun test_module_init() {
     let creator = @0xCA;
     let mut scenario = test_scenario::begin(creator);
     {
-        init(scenario.ctx());
+        let otw = DASHBOARD {};
+        init(otw, scenario.ctx());
     };
 
     scenario.next_tx(creator);
