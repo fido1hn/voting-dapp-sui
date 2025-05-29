@@ -15,18 +15,16 @@ fun test_create_proposal_with_admin_cap() {
 
     scenario.next_tx(user);
     {
-        let title = b"Hi".to_string();
-        let desc = b"Greeting".to_string();
         let admin_cap = scenario.take_from_sender<AdminCapability>();
-        proposal::create(&admin_cap, title, desc, 3000000000, scenario.ctx());
+        new_proposal(&admin_cap, scenario.ctx());
         test_scenario::return_to_sender(&scenario, admin_cap);
     };
 
     scenario.next_tx(user);
     {
         let created_proposal = scenario.take_shared<Proposal>();
-        assert!(created_proposal.title() == b"Hi".to_string());
-        assert!(created_proposal.description() == b"Greeting".to_string());
+        assert!(created_proposal.title() == b"Test".to_string());
+        assert!(created_proposal.description() == b"Test".to_string());
         assert!(created_proposal.expiration() == 3000000000);
         assert!(created_proposal.voted_no_count() == 0);
         assert!(created_proposal.voted_yes_count() == 0);
@@ -49,11 +47,15 @@ fun test_create_proposal_without_admin_cap() {
 
     scenario.next_tx(user);
     {
-        let title = b"Hi".to_string();
-        let desc = b"Greeting".to_string();
         let admin_cap = scenario.take_from_sender<AdminCapability>();
-        proposal::create(&admin_cap, title, desc, 3000000000, scenario.ctx());
+        new_proposal(&admin_cap, scenario.ctx());
         test_scenario::return_to_sender(&scenario, admin_cap);
     };
     scenario.end();
+}
+
+fun new_proposal(admin_cap: &AdminCapability, ctx: &mut TxContext) {
+    let title = b"Test".to_string();
+    let desc = b"Test".to_string();
+    proposal::create(admin_cap, title, desc, 3000000000, ctx);
 }
