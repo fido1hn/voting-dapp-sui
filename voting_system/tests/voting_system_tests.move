@@ -2,13 +2,18 @@
 module voting_system::voting_system_tests;
 
 use sui::test_scenario;
-use voting_system::dashboard::AdminCapability;
+use voting_system::dashboard::{Self, AdminCapability};
 use voting_system::proposal::{Self, Proposal};
 
 #[test]
 fun test_create_proposal() {
     let user = @0xCA;
     let mut scenario = test_scenario::begin(user);
+    {
+        dashboard::issue_public_cap(scenario.ctx());
+    };
+
+    scenario.next_tx(user);
     {
         let title = b"Hi".to_string();
         let desc = b"Greeting".to_string();
