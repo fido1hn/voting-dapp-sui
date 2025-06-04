@@ -17,7 +17,7 @@ public struct ShoppingCart {
     items: vector<u64>,
 }
 
-public struct DashboardConfig has drop {
+public struct DashboardConfig has copy, drop {
     value: u64,
 }
 // OTW (one time witness) pattern
@@ -30,10 +30,16 @@ fun init(otw: DASHBOARD, ctx: &mut TxContext) {
 
 public fun new(_otw: DASHBOARD, ctx: &mut TxContext) {
     let dashboard = Dashboard { id: object::new(ctx), proposals_ids: vector[] };
+
     let config = DashboardConfig { value: 100 };
+    let mut config_2 = config;
+    config_2.value = 1000;
+    consume_config(config);
+    consume_config(config_2);
+
     let potato = Potato {};
     pass_potato(potato);
-    consume_config(config);
+
     transfer::share_object(dashboard);
 }
 
