@@ -9,6 +9,10 @@ public struct AdminCapability has key {
     id: UID,
 }
 
+public struct DashboardConfig has drop {
+    value: u64,
+}
+// OTW (one time witness) pattern
 public struct DASHBOARD has drop {}
 
 fun init(otw: DASHBOARD, ctx: &mut TxContext) {
@@ -18,8 +22,12 @@ fun init(otw: DASHBOARD, ctx: &mut TxContext) {
 
 public fun new(_otw: DASHBOARD, ctx: &mut TxContext) {
     let dashboard = Dashboard { id: object::new(ctx), proposals_ids: vector[] };
+    let config = DashboardConfig { value: 100 };
+    consume_config(config);
     transfer::share_object(dashboard);
 }
+
+fun consume_config(_config: DashboardConfig) {}
 
 public fun register_proposal(self: &mut Dashboard, proposal_id: ID) {
     self.proposals_ids.push_back(proposal_id);
