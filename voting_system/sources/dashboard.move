@@ -9,6 +9,14 @@ public struct AdminCapability has key {
     id: UID,
 }
 
+// Hot potato pattern - has no abilities
+// Cannot be stored, copied or discarded
+public struct Potato {}
+
+public struct ShoppingCart {
+    items: vector<u64>,
+}
+
 public struct DashboardConfig has drop {
     value: u64,
 }
@@ -23,8 +31,26 @@ fun init(otw: DASHBOARD, ctx: &mut TxContext) {
 public fun new(_otw: DASHBOARD, ctx: &mut TxContext) {
     let dashboard = Dashboard { id: object::new(ctx), proposals_ids: vector[] };
     let config = DashboardConfig { value: 100 };
+    let potato = Potato {};
+    pass_potato(potato);
     consume_config(config);
     transfer::share_object(dashboard);
+}
+
+public fun checkout(shopping_cart: ShoppingCart) {
+    payment(shopping_cart);
+}
+
+public fun payment(shopping_cart: ShoppingCart) {
+    let ShoppingCart { items } = shopping_cart;
+}
+
+fun pass_potato(potato: Potato) {
+    pass_potato_again(potato)
+}
+
+fun pass_potato_again(potato: Potato) {
+    let Potato {} = potato;
 }
 
 fun consume_config(_config: DashboardConfig) {}
