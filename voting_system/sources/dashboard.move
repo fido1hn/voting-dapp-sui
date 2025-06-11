@@ -33,9 +33,18 @@ public fun register_proposal(self: &mut Dashboard, proposal_id: ID) {
     self.proposals_ids.push_back(proposal_id);
 }
 
+public fun proposal_ids(self: &Dashboard): vector<ID> {
+    self.proposals_ids
+}
+
 #[test_only]
 public fun issue_admin_cap(ctx: &mut TxContext) {
     transfer::transfer(AdminCapability { id: object::new(ctx) }, ctx.sender())
+}
+
+#[test_only]
+public fun new_otw(_ctx: &mut TxContext): DASHBOARD {
+    DASHBOARD {}
 }
 
 #[test]
