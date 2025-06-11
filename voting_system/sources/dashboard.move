@@ -1,5 +1,10 @@
 module voting_system::dashboard;
 
+use sui::types;
+
+const EDuplicateProposal: u64 = 0;
+const EInvalidOneTimeWitness: u64 = 1;
+
 public struct Dashboard has key {
     id: UID,
     proposals_ids: vector<ID>,
@@ -9,17 +14,6 @@ public struct AdminCapability has key {
     id: UID,
 }
 
-// Hot potato pattern - has no abilities
-// Cannot be stored, copied or discarded
-public struct Potato {}
-
-public struct ShoppingCart {
-    items: vector<u64>,
-}
-
-public struct DashboardConfig has copy, drop {
-    value: u64,
-}
 // OTW (one time witness) pattern
 public struct DASHBOARD has drop {}
 
@@ -28,40 +22,14 @@ fun init(otw: DASHBOARD, ctx: &mut TxContext) {
     transfer::transfer(AdminCapability { id: object::new(ctx) }, ctx.sender());
 }
 
-public fun new(_otw: DASHBOARD, ctx: &mut TxContext) {
+public fun new(otw: DASHBOARD, ctx: &mut TxContext) {
+    assert!(types::is_one_time_witness(&otw), EInvalidOneTimeWitness);
     let dashboard = Dashboard { id: object::new(ctx), proposals_ids: vector[] };
-
-    let config = DashboardConfig { value: 100 };
-    let mut config_2 = config;
-    config_2.value = 1000;
-    consume_config(config);
-    consume_config(config_2);
-
-    let potato = Potato {};
-    pass_potato(potato);
-
     transfer::share_object(dashboard);
 }
 
-public fun checkout(shopping_cart: ShoppingCart) {
-    payment(shopping_cart);
-}
-
-public fun payment(shopping_cart: ShoppingCart) {
-    let ShoppingCart { items } = shopping_cart;
-}
-
-fun pass_potato(potato: Potato) {
-    pass_potato_again(potato)
-}
-
-fun pass_potato_again(potato: Potato) {
-    let Potato {} = potato;
-}
-
-fun consume_config(_config: DashboardConfig) {}
-
 public fun register_proposal(self: &mut Dashboard, proposal_id: ID) {
+    assert!(!self.proposals_ids.contains(&proposal_id), EDuplicateProposal);
     self.proposals_ids.push_back(proposal_id);
 }
 
