@@ -31,4 +31,20 @@ sui client ptb \
   '"Ministerial Proposal"' '"Who should be a Minister?"' 1749068449 \
   --move-call 0x078c6870104e651c27714bb2a3bab3a2508e2bb455f9bda4e000984c698e7bb3::dashboard::create_proposal \
   '"Kingship Proposal"' '"Who should be a King?"' 1749068449
+
+sui client ptb \
+  --move-call 0xfb4d1b9c4b3487b84fdff137a752fff5dd1eb492b353789ce4205b2bd989165f::proposal::create \
+  @0xe5a5d33f53fd12d0b40aeed5f1ae3115436cbab461c0dd4f925c88e219617fa3 \
+  '"Senatorial Proposal 2"' '"Who should be a Benue Governor?"' 1813364938 \
+  --assign proposal_id \
+  --move-call 0xfb4d1b9c4b3487b84fdff137a752fff5dd1eb492b353789ce4205b2bd989165f::dashboard::register_proposal \
+  @0xff1cb49fe98e2c7976f3afb804cc263338cded00887742ab44b6c18ef9a0e7e0 proposal_id \
+  --move-call 0xfb4d1b9c4b3487b84fdff137a752fff5dd1eb492b353789ce4205b2bd989165f::proposal::create \
+  @0xe5a5d33f53fd12d0b40aeed5f1ae3115436cbab461c0dd4f925c88e219617fa3 \
+  '"Senatorial Proposal 3"' '"Who should be a Benue Local Government Chairman?"' 1813364938 \
+  --assign proposal_id \
+  --move-call 0xfb4d1b9c4b3487b84fdff137a752fff5dd1eb492b353789ce4205b2bd989165f::dashboard::register_proposal \
+  @0xff1cb49fe98e2c7976f3afb804cc263338cded00887742ab44b6c18ef9a0e7e0 proposal_id
+
+
 */
