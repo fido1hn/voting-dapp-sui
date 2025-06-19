@@ -1,15 +1,15 @@
 export const TESTNET_PACKAGE_ID =
-  "0xfb4d1b9c4b3487b84fdff137a752fff5dd1eb492b353789ce4205b2bd989165f";
+  "0x9f6f429eb67baf3375fec2d7707804a630e601e13bead98d551f20f3025d7062";
 export const DEVNET_PACKAGE_ID = "0x123";
 export const MAINNET_PACKAGE_ID = "0x234";
 
 export const TESTNET_ADMIN_CAP =
-  "0xe5a5d33f53fd12d0b40aeed5f1ae3115436cbab461c0dd4f925c88e219617fa3";
+  "0x5f42c9965e0915f4704ca9e83728b5eb8f030677fb12f49623cf45f2c2c24078";
 export const DEVNET_ADMIN_CAP = "0x123";
 export const MAINNET_ADMIN_CAP = "0x234";
 
 export const TESTNET_DASHBOARD_ID =
-  "0xff1cb49fe98e2c7976f3afb804cc263338cded00887742ab44b6c18ef9a0e7e0";
+  "0xa174854a29101042c1ae1b16f92f7e6fbb50011ca35bac3519e69c0085a4f05e";
 export const DEVNET_DASHBOARD_ID = "0x123";
 export const MAINNET_DASHBOARD_ID = "0x234";
 
@@ -33,18 +33,20 @@ sui client ptb \
   '"Kingship Proposal"' '"Who should be a King?"' 1749068449
 
 sui client ptb \
-  --move-call 0xfb4d1b9c4b3487b84fdff137a752fff5dd1eb492b353789ce4205b2bd989165f::proposal::create \
-  @0xe5a5d33f53fd12d0b40aeed5f1ae3115436cbab461c0dd4f925c88e219617fa3 \
-  '"Senatorial Proposal 2"' '"Who should be a Benue Governor?"' 1813364938 \
+  --move-call 0x9f6f429eb67baf3375fec2d7707804a630e601e13bead98d551f20f3025d7062::proposal::create \
+  @0x5f42c9965e0915f4704ca9e83728b5eb8f030677fb12f49623cf45f2c2c24078 \
+  '"Senatorial Proposal 1"' '"Who should be a Benue Governor?"' 1813364938 \
   --assign proposal_id \
-  --move-call 0xfb4d1b9c4b3487b84fdff137a752fff5dd1eb492b353789ce4205b2bd989165f::dashboard::register_proposal \
-  @0xff1cb49fe98e2c7976f3afb804cc263338cded00887742ab44b6c18ef9a0e7e0 proposal_id \
-  --move-call 0xfb4d1b9c4b3487b84fdff137a752fff5dd1eb492b353789ce4205b2bd989165f::proposal::create \
-  @0xe5a5d33f53fd12d0b40aeed5f1ae3115436cbab461c0dd4f925c88e219617fa3 \
-  '"Senatorial Proposal 3"' '"Who should be a Benue Local Government Chairman?"' 1813364938 \
+  --move-call 0x9f6f429eb67baf3375fec2d7707804a630e601e13bead98d551f20f3025d7062::dashboard::register_proposal \
+  @0xa174854a29101042c1ae1b16f92f7e6fbb50011ca35bac3519e69c0085a4f05e \
+  @0x5f42c9965e0915f4704ca9e83728b5eb8f030677fb12f49623cf45f2c2c24078 proposal_id \
+  --move-call 0x9f6f429eb67baf3375fec2d7707804a630e601e13bead98d551f20f3025d7062::proposal::create \
+  @0x5f42c9965e0915f4704ca9e83728b5eb8f030677fb12f49623cf45f2c2c24078 \
+  '"Senatorial Proposal 2"' '"Who should be a Benue Local Government Chairman?"' 1813364938 \
   --assign proposal_id \
-  --move-call 0xfb4d1b9c4b3487b84fdff137a752fff5dd1eb492b353789ce4205b2bd989165f::dashboard::register_proposal \
-  @0xff1cb49fe98e2c7976f3afb804cc263338cded00887742ab44b6c18ef9a0e7e0 proposal_id
+  --move-call 0x9f6f429eb67baf3375fec2d7707804a630e601e13bead98d551f20f3025d7062::dashboard::register_proposal \
+  @0xa174854a29101042c1ae1b16f92f7e6fbb50011ca35bac3519e69c0085a4f05e \
+  @0x5f42c9965e0915f4704ca9e83728b5eb8f030677fb12f49623cf45f2c2c24078 proposal_id 
 
 
 */
